@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Gabriel</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Archivo+Black&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<!-- Supabase JS Client Library -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--navy:#050b1f;--blue:#1747d6;--glass:rgba(255,255,255,.07);--line:rgba(120,160,255,.25);--serif:'Cormorant Garamond',Georgia,serif;--block:'Archivo Black',Impact,sans-serif}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--navy);color:#fff;font:400 16px/1.5 Inter,system-ui,sans-serif;overflow-x:hidden}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #8fb0ff;outline-offset:2px}
+#bg{position:fixed;inset:-20px;background:radial-gradient(circle at 50% 30%,#16357f,#050b1f 70%) center/cover;transition:filter 1.6s ease;filter:blur(2px) brightness(.6);z-index:0}
+body.w #bg{filter:blur(22px) brightness(.4)}
+body:not([data-v=home]) #bg{filter:blur(14px) brightness(.22)}
+#buddy{position:fixed;left:50%;bottom:0;height:40vh;max-height:420px;transform:translateX(-50%);z-index:0;transition:filter 1.6s;filter:drop-shadow(0 0 40px rgba(60,120,255,.55));pointer-events:none}
+body.w #buddy{filter:blur(18px)}
+body:not([data-v=home]) #buddy,body.hasphoto #buddy{display:none}
+#welcome{position:fixed;inset:0;z-index:50;display:grid;place-items:center;font:italic 600 clamp(56px,16vw,120px)/1 var(--serif);transition:opacity 1s;pointer-events:none}
+body:not(.w) #welcome{opacity:0}
+header{position:fixed;top:0;left:0;right:0;height:calc(56px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 12px 0;display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,#123bb8,#1d56f0);box-shadow:0 4px 24px rgba(23,71,214,.45);z-index:30}
+header span{flex:1;font-weight:600}
+.ib{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:22px}
+.ib:active{background:rgba(255,255,255,.18)}
+#burger{display:flex;flex-direction:column;gap:5px;align-items:center;justify-content:center}
+#burger i{display:block;width:22px;height:2.5px;background:#fff;border-radius:2px}
+#minion{position:fixed;right:10px;top:calc(46px + env(safe-area-inset-top));z-index:31;width:30px;transform-origin:50% 0;animation:sway 3.2s ease-in-out infinite;pointer-events:none}
+@keyframes sway{50%{transform:rotate(7deg)}}
+.view{display:none;position:relative;z-index:1;min-height:100%;padding:calc(76px + env(safe-area-inset-top)) 18px 120px;max-width:760px;margin:auto}
+.view.on{display:block}
+#home.on{display:grid;place-items:center;text-align:center;min-height:100vh;padding-bottom:40px}
+#home h1{font:italic 600 clamp(38px,10vw,72px)/1.1 var(--serif);text-shadow:0 2px 24px #000}
+#home p{margin-top:18px;font:italic 500 clamp(20px,5vw,30px)/1.3 var(--serif);text-shadow:0 2px 16px #000}
+#home>div{opacity:0;transform:translateY(14px);transition:opacity 1.2s .5s,transform 1.2s .5s}
+body:not(.w) #home>div{opacity:1;transform:none}
+h2.t{font:600 22px Inter;margin-bottom:16px}
+.row{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:12px;margin-bottom:10px;background:var(--glass);border:1px solid var(--line);border-radius:16px;backdrop-filter:blur(10px)}
+.row:active{background:rgba(255,255,255,.14)}
+.av{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#2f6bff,#1a3fb0);font-weight:600}
+.row span{display:flex;flex-direction:column;min-width:0}
+.row small{color:#b9c8ee;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.empty{color:#b9c8ee;text-align:center;padding:40px 10px}
+.fab{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);width:62px;height:62px;border-radius:50%;background:#0f5bff;font-size:34px;line-height:1;box-shadow:0 0 28px rgba(40,110,255,.7);z-index:20;display:none}
+body[data-v=msgs] .fab,body[data-v=mems] .fab{display:block}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px}
+.tile{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:#0b1636;border:1px solid var(--line)}
+.tile img,.tile video{width:100%;height:100%;object-fit:cover;display:block}
+.tile b{position:absolute;inset:0;display:grid;place-items:center;font-size:26px;text-shadow:0 0 12px #000;background:rgba(0,0,0,.18)}
+#viewer.on{display:flex;flex-direction:column;padding-bottom:24px;max-width:none}
+#vtop{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+#vtop div{flex:1;min-width:0}#vtop strong{display:block}#vtop small{color:#b9c8ee}
+#vbody{flex:1;display:grid;place-items:center;min-height:0;position:relative}
+#vbody img,#vbody video{max-width:100%;max-height:72vh;border-radius:14px;box-shadow:0 10px 50px #000}
+#vbody video{width:100%;background:#000}
+.card{width:100%;max-width:560px;padding:28px 24px;border-radius:22px;background:linear-gradient(160deg,rgba(40,80,200,.35),rgba(255,255,255,.06));border:1px solid var(--line);backdrop-filter:blur(12px)}
+.card h2{font:italic 600 34px var(--serif);margin-bottom:12px}
+.card p{font:italic 500 23px/1.45 var(--serif);white-space:pre-wrap;overflow-wrap:anywhere}
+#nav{display:flex;justify-content:space-between;margin-top:12px}
+#nav button{width:48px;height:48px;border-radius:50%;background:var(--glass);border:1px solid var(--line);font-size:24px}
+#scrim,#modal{position:fixed;inset:0;z-index:40;background:rgba(2,6,20,.65);opacity:0;pointer-events:none;transition:opacity .3s}
+#scrim.on,#modal.on{opacity:1;pointer-events:auto}
+#drawer{position:fixed;top:0;right:0;bottom:0;width:min(86vw,340px);z-index:41;padding:calc(76px + env(safe-area-inset-top)) 18px 18px;background:linear-gradient(180deg,#0a1a52,#050b1f);border-left:1px solid var(--line);transform:translateX(105%);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+#drawer.on{transform:none}
+#drawer button{display:block;width:100%;text-align:left;margin-bottom:12px;padding:20px 18px;border-radius:16px;font:20px var(--block);background:var(--glass);border:1px solid var(--line)}
+#drawer button.hot{background:#0f5bff;box
